@@ -1,0 +1,21 @@
+{
+  "name": "electron-reload",
+  "version": "0.0.1",
+  "description": "Simplest way to reload an electron app on file changes!",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yan-foto/electron-reload.git"
+  },
+  "keywords": [
+    "electron",
+    "reload",
+    "auto-reload",
+    "node"
+  ],
+  "author": "Yan Foto <yan.foto@quaintous.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yan-foto/electron-reload/issues"
+  }
+}
