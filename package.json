@@ -17,5 +17,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/yan-foto/electron-reload/issues"
+  },
+  "dependencies": {
+    "chokidar": "^1.0.5"
   }
 }
