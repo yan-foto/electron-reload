@@ -3,7 +3,7 @@ var chokidar = require('chokidar');
 
 module.exports = function(glob, options) {
   var browserWindows = [];
-  var opts = options || {ignored: /[\/\\]\./};
+  var opts = options || {ignored: /node_modules|[\/\\]\./};
 
   var onChange = function() {
     browserWindows.forEach(function(bw) {
