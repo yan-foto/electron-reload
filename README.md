@@ -34,7 +34,7 @@ app.on('ready', function () {
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
-* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options. (default: `{ignored: /[\/\\]\./}`)
+* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options. (default: `{ignored: /node_modules|[\/\\]\./}`)
 
 
 # Why this module?
