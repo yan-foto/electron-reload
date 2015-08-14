@@ -1,17 +1,34 @@
 var app = require('app');
 var chokidar = require('chokidar');
+var extend = require('util')._extend;
 
-module.exports = function(glob, options) {
+// Hard reset when electron prebuilt is used
+var prepareHardReset = function(electron) {
+  var proc = require('child_process');
+  var path = require('path');
+
+  var appPath = app.getAppPath();
+
+  var config = require(path.join(appPath, 'package.json'));
+  var mainFile = path.join(appPath, config.main);
+
+  chokidar.watch(mainFile).on('change', function() {
+    proc.spawn(electron, [appPath]);
+    // Kamikaze!
+    app.quit();
+  });
+};
+
+var bootstrap = function(glob, options) {
   var browserWindows = [];
-  var opts = options || {ignored: /node_modules|[\/\\]\./};
+  var opts = extend({ignored: /node_modules|[\/\\]\./}, options);
+  var watcher = chokidar.watch(glob, opts);
 
   var onChange = function() {
     browserWindows.forEach(function(bw) {
       bw.webContents.reloadIgnoringCache();
     });
   };
-
-  var watcher = chokidar.watch(glob, opts);
 
   // Due to this issue: https://github.com/atom/electron/issues/2455
   // I suppose this is our best chance to know when a BW is created
@@ -29,5 +46,14 @@ module.exports = function(glob, options) {
     }
   });
 
+  // Preparing hard reset
+  if(options.electron) {
+    prepareHardReset(options.electron);
+  } else {
+    console.log('Electron prebuilt could not be found. No hard reset for you!');
+  }
+
   watcher.on('change', onChange);
 };
+
+module.exports = bootstrap;

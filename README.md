@@ -31,10 +31,18 @@ app.on('ready', function () {
 });
 ```
 
+Not that the above code only refreshes `WebContent`s of all `BrowserWindow`s. So if you want to have a hard reset (starting a new electron process) you can just pass the path to the electron executable in the `options` object. For example if you already have electron pre-built installed you could just do
+
+```js
+require('electron-reload')(__dirname, {
+  electron: require('electron-prebuilt')
+});
+```
+
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
-* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options. (default: `{ignored: /node_modules|[\/\\]\./}`)
+* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options plus `electron` property pointing to electron executables. (default: `{ignored: /node_modules|[\/\\]\./}`)
 
 
 # Why this module?
