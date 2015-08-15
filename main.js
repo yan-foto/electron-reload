@@ -1,6 +1,7 @@
 var app = require('app');
 var chokidar = require('chokidar');
 var extend = require('util')._extend;
+var fs = require('fs');
 
 // Hard reset when electron prebuilt is used
 var prepareHardReset = function(electron) {
@@ -47,10 +48,11 @@ var bootstrap = function(glob, options) {
   });
 
   // Preparing hard reset
-  if(options.electron) {
-    prepareHardReset(options.electron);
+  var eXecutable = options.electron;
+  if(eXecutable && fs.existsSync(eXecutable)) {
+    prepareHardReset(eXecutable);
   } else {
-    console.log('Electron prebuilt could not be found. No hard reset for you!');
+    console.log('Electron could not be found. No hard resets for you!');
   }
 
   watcher.on('change', onChange);
