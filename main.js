@@ -3,23 +3,6 @@ var chokidar = require('chokidar');
 var extend = require('util')._extend;
 var fs = require('fs');
 
-// Hard reset when electron prebuilt is used
-var prepareHardReset = function(electron) {
-  var proc = require('child_process');
-  var path = require('path');
-
-  var appPath = app.getAppPath();
-
-  var config = require(path.join(appPath, 'package.json'));
-  var mainFile = path.join(appPath, config.main);
-
-  chokidar.watch(mainFile).on('change', function() {
-    proc.spawn(electron, [appPath]);
-    // Kamikaze!
-    app.quit();
-  });
-};
-
 var bootstrap = function(glob, options) {
   var browserWindows = [];
   var opts = extend({ignored: /node_modules|[\/\\]\./}, options);
@@ -50,7 +33,19 @@ var bootstrap = function(glob, options) {
   // Preparing hard reset
   var eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
-    prepareHardReset(eXecutable);
+    var proc = require('child_process');
+    var path = require('path');
+
+    var appPath = app.getAppPath();
+
+    var config = require(path.join(appPath, 'package.json'));
+    var mainFile = path.join(appPath, config.main);
+
+    chokidar.watch(mainFile).on('change', function() {
+      proc.spawn(eXecutable, [appPath]);
+      // Kamikaze!
+      app.quit();
+    });
   } else {
     console.log('Electron could not be found. No hard resets for you!');
   }
