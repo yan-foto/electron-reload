@@ -4,6 +4,7 @@ var extend = require('util')._extend;
 var fs = require('fs');
 
 var bootstrap = function(glob, options) {
+  options = options || {};
   var browserWindows = [];
   var opts = extend({ignored: /node_modules|[\/\\]\./}, options);
   var watcher = chokidar.watch(glob, opts);
