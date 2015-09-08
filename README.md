@@ -26,7 +26,7 @@ require('electron-reload')(__dirname);
 // Standard stuff
 
 app.on('ready', function () {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  var mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
   // the rest...
