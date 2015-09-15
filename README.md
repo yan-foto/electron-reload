@@ -54,3 +54,7 @@ Simply put, I was tired and confused by all other available modules which are so
 
 # Even more!
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
+
+# Changelog
+
+ - **0.2.0**: Use new electrons (> v0.32.3) `browser-window-created` event

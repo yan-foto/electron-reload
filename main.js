@@ -15,21 +15,14 @@ var bootstrap = function(glob, options) {
     });
   };
 
-  // Due to this issue: https://github.com/atom/electron/issues/2455
-  // I suppose this is our best chance to know when a BW is created
-  app.on('browser-window-focus', function(e, bw) {
+  app.on('browser-window-created', function(e, bw) {
+    browserWindows.push(bw);
     var i = browserWindows.indexOf(bw);
 
-    // A new browser window
-    if(i === -1) {
-      browserWindows.push(bw);
-
-      // Remove reference when BrowserWindow is closed
-      bw.on('closed', function() {
-        browserWindows.splice(i, 1);
-      });
-    }
-  });
+    bw.on('closed', function() {
+      browserWindows.splice(i, 1);
+    });
+  })
 
   // Preparing hard reset
   var eXecutable = options.electron;
