@@ -18,8 +18,9 @@ Just initialize this module with desired glob or file path to watch and let it r
 ```js
 'use strict';
 
-var app = require('app');
-var BrowserWindow = require('browser-window');
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 
 require('electron-reload')(__dirname);
 
@@ -57,4 +58,5 @@ If you want to have least effort when developing electron packages, take a look 
 
 # Changelog
 
+ - **0.3.0**: Use new method of accessing `app` (e.g. `require(electron).app`)
  - **0.2.0**: Use new electrons (> v0.32.3) `browser-window-created` event
