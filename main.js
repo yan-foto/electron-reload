@@ -1,7 +1,7 @@
-var app = require('app');
-var chokidar = require('chokidar');
-var extend = require('util')._extend;
-var fs = require('fs');
+const app = require('electron').app;
+const chokidar = require('chokidar');
+const extend = require('util')._extend;
+const fs = require('fs');
 
 var bootstrap = function(glob, options) {
   options = options || {};
