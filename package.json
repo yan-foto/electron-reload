@@ -19,6 +19,6 @@
     "url": "https://github.com/yan-foto/electron-reload/issues"
   },
   "dependencies": {
-    "chokidar": "^1.0.5"
+    "chokidar": "^1.5.1"
   }
 }
