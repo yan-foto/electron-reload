@@ -1,41 +1,48 @@
-const app = require('electron').app;
+const {app} = require('electron');
 const chokidar = require('chokidar');
-const extend = require('util')._extend;
+const {_extend: extend} = require('util');
 const fs = require('fs');
 
-var bootstrap = function(glob, options) {
+module.exports = (glob, options) => {
   options = options || {};
-  var browserWindows = [];
-  var opts = extend({ignored: /node_modules|[\/\\]\./}, options);
-  var watcher = chokidar.watch(glob, opts);
+  let browserWindows = [];
+  let opts = extend({ignored: /node_modules|[\/\\]\./}, options);
+  let watcher = chokidar.watch(glob, opts);
 
-  var onChange = function() {
-    browserWindows.forEach(function(bw) {
+  /**
+   * Callback function to be executed when any of the files
+   * defined in given 'glob' is changed.
+   */
+  let onChange = () => {
+    browserWindows.forEach((bw) => {
       bw.webContents.reloadIgnoringCache();
     });
   };
 
-  app.on('browser-window-created', function(e, bw) {
+  // Add each created BrowserWindow to list of maintained items
+  app.on('browser-window-created', (e, bw) => {
     browserWindows.push(bw);
-    var i = browserWindows.indexOf(bw);
+    let i = browserWindows.indexOf(bw);
 
+    // Remove closed windows from list of maintained items
     bw.on('closed', function() {
       browserWindows.splice(i, 1);
     });
-  })
+  });
 
-  // Preparing hard reset
-  var eXecutable = options.electron;
+  // Preparing hard reset if electron executable is given in options
+  // A hard reset is only done when the main file has changed
+  let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
-    var proc = require('child_process');
-    var path = require('path');
+    let proc = require('child_process');
+    let path = require('path');
 
-    var appPath = app.getAppPath();
+    let appPath = app.getAppPath();
 
-    var config = require(path.join(appPath, 'package.json'));
-    var mainFile = path.join(appPath, config.main);
+    let config = require(path.join(appPath, 'package.json'));
+    let mainFile = path.join(appPath, config.main);
 
-    chokidar.watch(mainFile).on('change', function() {
+    chokidar.watch(mainFile).on('change', () => {
       proc.spawn(eXecutable, [appPath]);
       // Kamikaze!
       app.quit();
@@ -46,5 +53,3 @@ var bootstrap = function(glob, options) {
 
   watcher.on('change', onChange);
 };
-
-module.exports = bootstrap;
