@@ -18,18 +18,15 @@ Just initialize this module with desired glob or file path to watch and let it r
 ```js
 'use strict';
 
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const {app, BrowserWindow} = require('electron');
 
 require('electron-reload')(__dirname);
 
 // Standard stuff
+app.on('ready', () {
+  let mainWindow = new BrowserWindow({width: 800, height: 600});
 
-app.on('ready', function () {
-  var mainWindow = new BrowserWindow({ width: 800, height: 600 });
-
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadUrl(`file://${__dirname}/index.html`);
   // the rest...
 });
 ```
@@ -58,5 +55,6 @@ If you want to have least effort when developing electron packages, take a look 
 
 # Changelog
 
+ - **1.0.0**: Adapt to Electron 1.0 new API
  - **0.3.0**: Use new method of accessing `app` (e.g. `require(electron).app`)
  - **0.2.0**: Use new electrons (> v0.32.3) `browser-window-created` event
