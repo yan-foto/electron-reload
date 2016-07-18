@@ -1,12 +1,11 @@
 const {app} = require('electron');
 const chokidar = require('chokidar');
-const {_extend: extend} = require('util');
 const fs = require('fs');
 
 module.exports = (glob, options) => {
   options = options || {};
   let browserWindows = [];
-  let opts = extend({ignored: /node_modules|[\/\\]\./}, options);
+  let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
   let watcher = chokidar.watch(glob, opts);
 
   /**
