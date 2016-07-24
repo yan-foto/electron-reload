@@ -55,6 +55,7 @@ If you want to have least effort when developing electron packages, take a look 
 
 # Changelog
 
+ - **1.0.1**: Replace `extend` with `Object.assign`
  - **1.0.0**: Adapt to Electron 1.0 new API
  - **0.3.0**: Use new method of accessing `app` (e.g. `require(electron).app`)
  - **0.2.0**: Use new electrons (> v0.32.3) `browser-window-created` event
