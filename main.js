@@ -43,7 +43,8 @@ module.exports = (glob, options) => {
 
     chokidar.watch(mainFile).on('change', () => {
       proc.spawn(eXecutable, [appPath], {
-	      detached: true
+        detached: true,
+        stdio: 'inherit',
       });
       // Kamikaze!
       app.quit();
