@@ -42,7 +42,9 @@ module.exports = (glob, options) => {
     let mainFile = path.join(appPath, config.main);
 
     chokidar.watch(mainFile).on('change', () => {
-      proc.spawn(eXecutable, [appPath]);
+      proc.spawn(eXecutable, [appPath], {
+	      detached: true
+      });
       // Kamikaze!
       app.quit();
     });
