@@ -42,7 +42,13 @@ module.exports = (glob, options) => {
     let mainFile = path.join(appPath, config.main);
 
     chokidar.watch(mainFile).on('change', () => {
-      proc.spawn(eXecutable, [appPath]);
+      // Detaching child is useful when in Windows to let child
+      // live after the parent is killed
+      let child = proc.spawn(eXecutable, [appPath], {
+        detached: true,
+        stdio: 'inherit'
+      });
+      child.unref();
       // Kamikaze!
       app.quit();
     });
