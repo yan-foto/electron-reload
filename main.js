@@ -7,7 +7,6 @@ module.exports = (glob, options) => {
   let browserWindows = [];
   let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
   let watcher = chokidar.watch(glob, opts);
-  let isWin = /^win/.test(process.platform);
 
   /**
    * Callback function to be executed when any of the files
@@ -43,17 +42,13 @@ module.exports = (glob, options) => {
     let mainFile = path.join(appPath, config.main);
 
     chokidar.watch(mainFile).on('change', () => {
-	  // Detaching child is useful when in Windows to let child
-	  // live after the parent is killed
-	  if (isWin) {
-	    let child = proc.spawn(eXecutable, [appPath], {
-	      detached: true,
-		  stdio: 'inherit'
-	    });
-	    child.unref();
-	  } else {
-		  proc.spawn(eXecutable, [appPath]);
-	  }
+      // Detaching child is useful when in Windows to let child
+      // live after the parent is killed
+      let child = proc.spawn(eXecutable, [appPath], {
+        detached: true,
+        stdio: 'inherit'
+      });
+      child.unref();
       // Kamikaze!
       app.quit();
     });
