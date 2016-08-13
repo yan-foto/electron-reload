@@ -1,6 +1,8 @@
 const {app} = require('electron');
 const chokidar = require('chokidar');
 const fs = require('fs');
+const {spawn} = require('child_process');
+const path = require('path');
 
 module.exports = (glob, options) => {
   options = options || {};
@@ -33,11 +35,8 @@ module.exports = (glob, options) => {
   // A hard reset is only done when the main file has changed
   let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
-    let proc = require('child_process');
-    let path = require('path');
-
     let appPath = app.getAppPath();
-
+    // eslint-disable-line
     let config = require(path.join(appPath, 'package.json'));
     let mainFile = path.join(appPath, config.main);
 
