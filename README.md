@@ -43,8 +43,25 @@ require('electron-reload')(__dirname, {
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
-* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options plus `electron` property pointing to electron executables. (default: `{ignored: /node_modules|[\/\\]\./}`)
+* `options` (optional):  See [options](#options)
 
+# Options
+
+#### electron
+`string`  
+Path to electron
+
+#### singleURL
+`string`  
+If single url is passed, instead of reloading on change we load this url.  
+This is useful if you wrap Electron around an SPA that handles it's own routing.
+
+Everything else is passed to [`chokidar`](https://github.com/paulmillr/chokidar) with the default addition of
+```js
+{
+  ignored: /node_modules|[\/\\]\./
+}
+```
 
 # Why this module?
 Simply put, I was tired and confused by all other available modules which are so complicated\* for such an uncomplicated task!
