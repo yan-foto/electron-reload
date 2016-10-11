@@ -7,8 +7,8 @@ const path = require('path');
 module.exports = (glob, options) => {
   options = options || {};
   let browserWindows = [];
-  let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
-  let watcher = chokidar.watch(glob, opts);
+  let chokidarOptions = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
+  let watcher = chokidar.watch(glob, chokidarOptions);
 
   /**
    * Callback function to be executed when any of the files
