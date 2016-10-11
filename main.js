@@ -6,9 +6,12 @@ const path = require('path');
 
 module.exports = (glob, options) => {
   options = options || {};
-  
+
   let eXecutable = options.electron;
   delete options.electron;
+
+  let singleURL = options.singleURL;
+  delete options.singleURL;
 
   let browserWindows = [];
   let chokidarOptions = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
@@ -20,7 +23,11 @@ module.exports = (glob, options) => {
    */
   let onChange = () => {
     browserWindows.forEach((bw) => {
-      bw.webContents.reloadIgnoringCache();
+      if(singleURL){
+        bw.loadURL(singleURL);
+      } else {
+        bw.webContents.reloadIgnoringCache();
+      }
     });
   };
 
