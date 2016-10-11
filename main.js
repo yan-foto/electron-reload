@@ -6,6 +6,10 @@ const path = require('path');
 
 module.exports = (glob, options) => {
   options = options || {};
+  
+  let eXecutable = options.electron;
+  delete options.electron;
+
   let browserWindows = [];
   let chokidarOptions = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
   let watcher = chokidar.watch(glob, chokidarOptions);
@@ -33,7 +37,6 @@ module.exports = (glob, options) => {
 
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
-  let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
     let appPath = app.getAppPath();
     // eslint-disable-line
