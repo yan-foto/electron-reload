@@ -66,6 +66,7 @@ If you want to have least effort when developing electron packages, take a look 
 
 # Changelog
 
+ - **1.0.3**: Fix hard reset bug
  - **1.0.2**: Detach child so that killing parent doesn't kill it (on windows)
  - **1.0.1**: Replace `extend` with `Object.assign`
  - **1.0.0**: Adapt to Electron 1.0 new API
