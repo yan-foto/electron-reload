@@ -40,6 +40,16 @@ require('electron-reload')(__dirname, {
 });
 ```
 
+You could also use the (relatively) new [`electron`](https://www.npmjs.com/package/electron) package, *but* you should specify the path directly (no `require`!):
+
+```js
+const path = require('path')
+
+require('electron-reload')(__dirname, {
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+});
+```
+
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
