@@ -49,7 +49,7 @@ module.exports = (glob, options) => {
       });
       child.unref();
       // Kamikaze!
-      app.quit();
+      app.exit();
     });
   } else {
     console.log('Electron could not be found. No hard resets for you!');
