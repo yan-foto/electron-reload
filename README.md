@@ -50,6 +50,17 @@ require('electron-reload')(__dirname, {
 });
 ```
 
+If your app overrides some of the default `quit` or `close` actions (e.g. closing the last app window hides the window instead of quitting the app) then the default `electron-reload` hard restart could leave you with multiple instances of your app running. In these cases you can change the default hard restart action from `app.quit()` to `app.exit()` by specifying the hard reset method in the electron-reload options:
+
+```js
+const path = require('path')
+
+require('electron-reload')(__dirname, {
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+  hardResetMethod: 'exit'
+});
+```
+
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
@@ -65,7 +76,7 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
-
+ - **1.1.0**: Add `app.exit()` in addition to `app.quit()` for hard resets
  - **1.0.3**: Fix hard reset bug
  - **1.0.2**: Detach child so that killing parent doesn't kill it (on windows)
  - **1.0.1**: Replace `extend` with `Object.assign`

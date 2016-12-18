@@ -49,7 +49,15 @@ module.exports = (glob, options) => {
       });
       child.unref();
       // Kamikaze!
-      app.quit();
+
+      // In cases where an app overrides the default closing or quiting actions
+      // firing an `app.quit()` may not actually quit the app. In these cases
+      // you can use `app.exit()` to gracefully close the app.
+      if(opts.hardResetMethod === 'exit'){
+          app.exit();
+      } else {
+          app.quit();
+      }
     });
   } else {
     console.log('Electron could not be found. No hard resets for you!');
