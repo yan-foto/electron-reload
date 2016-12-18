@@ -6,9 +6,16 @@ const path = require('path');
 
 module.exports = (glob, options) => {
   options = options || {};
+
+  let eXecutable = options.electron;
+  delete options.electron;
+
+  let singleURL = options.singleURL;
+  delete options.singleURL;
+
   let browserWindows = [];
-  let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
-  let watcher = chokidar.watch(glob, opts);
+  let chokidarOptions = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
+  let watcher = chokidar.watch(glob, chokidarOptions);
 
   /**
    * Callback function to be executed when any of the files
@@ -16,7 +23,11 @@ module.exports = (glob, options) => {
    */
   let onChange = () => {
     browserWindows.forEach((bw) => {
-      bw.webContents.reloadIgnoringCache();
+      if(singleURL){
+        bw.loadURL(singleURL);
+      } else {
+        bw.webContents.reloadIgnoringCache();
+      }
     });
   };
 
@@ -33,7 +44,6 @@ module.exports = (glob, options) => {
 
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
-  let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
     let appPath = app.getAppPath();
     // eslint-disable-line
