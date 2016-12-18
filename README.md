@@ -76,7 +76,7 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
-
+ - **1.1.0**: Add `app.exit()` in addition to `app.quit()` for hard resets
  - **1.0.3**: Fix hard reset bug
  - **1.0.2**: Detach child so that killing parent doesn't kill it (on windows)
  - **1.0.1**: Replace `extend` with `Object.assign`
