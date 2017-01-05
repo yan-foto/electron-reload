@@ -4,11 +4,11 @@ const fs = require('fs');
 const {spawn} = require('child_process');
 const path = require('path');
 
-module.exports = (glob, options) => {
+module.exports = (mainDirname, options) => {
   options = options || {};
   let browserWindows = [];
   let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
-  let watcher = chokidar.watch(glob, opts);
+  let watcher = chokidar.watch(mainDirname, opts);
 
   /**
    * Callback function to be executed when any of the files
@@ -36,30 +36,43 @@ module.exports = (glob, options) => {
   let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
     let appPath = app.getAppPath();
-    // eslint-disable-line
+
+		// console.log('electron-reload: appPath:', appPath);
+		// console.log('electron-reload: __dirname:', __dirname);
+
+		// eslint-disable-line
     let config = require(path.join(appPath, 'package.json'));
-    let mainFile = path.join(appPath, config.main);
+    let mainFile = path.join(mainDirname, config.main);
 
-    chokidar.watch(mainFile).on('change', () => {
-      // Detaching child is useful when in Windows to let child
-      // live after the parent is killed
-      let child = spawn(eXecutable, [appPath], {
-        detached: true,
-        stdio: 'inherit'
-      });
-      child.unref();
-      // Kamikaze!
+		// console.log('electron-reload watching mainfile:',mainFile);
 
-      // In cases where an app overrides the default closing or quiting actions
-      // firing an `app.quit()` may not actually quit the app. In these cases
-      // you can use `app.exit()` to gracefully close the app.
-      if(opts.hardResetMethod === 'exit'){
-          app.exit();
-      } else {
-          app.quit();
-      }
-    });
-  } else {
+		if (fs.existsSync(mainFile)) {
+			chokidar.watch(mainFile).on('change', () => {
+
+			// console.log('electron-reload: mainFile onchange callback')
+
+			// Detaching child is useful when in Windows to let child
+			// live after the parent is killed
+			let child = spawn(eXecutable, [mainDirname], {
+				detached: true,
+				stdio: 'inherit'
+			});
+			child.unref();
+			// Kamikaze!
+
+			// In cases where an app overrides the default closing or quiting actions
+			// firing an `app.quit()` may not actually quit the app. In these cases
+			// you can use `app.exit()` to gracefully close the app.
+			if(opts.hardResetMethod === 'exit'){
+					app.exit();
+			} else {
+					app.quit();
+			}
+		});
+	} else {
+		console.log('mainFile does not exist:',mainFile);
+	};
+} else {
     console.log('Electron could not be found. No hard resets for you!');
   }
 
