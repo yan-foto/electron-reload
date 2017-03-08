@@ -15,9 +15,11 @@ module.exports = (glob, options) => {
    * defined in given 'glob' is changed.
    */
   let onChange = () => {
-    browserWindows.forEach((bw) => {
-      bw.webContents.reloadIgnoringCache();
-    });
+    if (browserWindows.length > 1) {
+      browserWindows.forEach((bw) => {
+        bw.webContents.reloadIgnoringCache();
+      });
+    }
   };
 
   // Add each created BrowserWindow to list of maintained items
