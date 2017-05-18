@@ -7,7 +7,20 @@ const path = require('path');
 module.exports = (glob, options) => {
   options = options || {};
   let browserWindows = [];
-  let opts = Object.assign({ignored: /node_modules|[\/\\]\./}, options);
+
+  // Main file poses a special case, as its changes are
+  // only effective when the process is restarted (hard reset)
+  let appPath = app.getAppPath();
+  let config = require(path.join(appPath, 'package.json'));
+  let mainFile = path.join(appPath, config.main);
+
+  // Watch everything but the node_modules folder and main file
+  // main file changes are only effective if hard reset is possible
+  let opts = Object.assign({ignored:
+    [
+      mainFile,
+      /node_modules|[\/\\]\./
+    ]}, options);
   let watcher = chokidar.watch(glob, opts);
 
   /**
@@ -35,11 +48,6 @@ module.exports = (glob, options) => {
   // A hard reset is only done when the main file has changed
   let eXecutable = options.electron;
   if(eXecutable && fs.existsSync(eXecutable)) {
-    let appPath = app.getAppPath();
-    // eslint-disable-line
-    let config = require(path.join(appPath, 'package.json'));
-    let mainFile = path.join(appPath, config.main);
-
     chokidar.watch(mainFile).on('change', () => {
       // Detaching child is useful when in Windows to let child
       // live after the parent is killed
