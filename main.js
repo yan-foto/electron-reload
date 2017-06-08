@@ -29,7 +29,6 @@ module.exports = (glob, options) => {
    * defined in given 'glob' is changed.
    */
   let onChange = () => {
-    console.log('changed')
     browserWindows.forEach((bw) => {
       bw.webContents.reloadIgnoringCache()
     })
