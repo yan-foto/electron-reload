@@ -77,6 +77,7 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **1.2.1**: Remove logging from production code (d'oh)
  - **1.2.0**: Allow hard reset in multiple browser windows
  - **1.1.0**: Add `app.exit()` in addition to `app.quit()` for hard resets
  - **1.0.3**: Fix hard reset bug
