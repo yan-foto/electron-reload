@@ -1,6 +1,7 @@
 # electron reload
 This is (*hopefully*) the simplest way to load contents of all active [`BrowserWindow`s](https://github.com/atom/electron/blob/master/docs/api/browser-window.md) within electron when the source files are changed.
 
+[![Build Status](https://travis-ci.org/yan-foto/electron-reload.svg?branch=master)](https://travis-ci.org/yan-foto/electron-reload)
 [![neutron](https://img.shields.io/badge/neutron-compatible-004455.svg)](https://github.com/yan-foto/neutron)
 [![npm](https://img.shields.io/npm/v/electron-reload.svg)](https://www.npmjs.com/package/electron-reload)
 [![Code Climate](https://codeclimate.com/github/yan-foto/electron-reload/badges/gpa.svg)](https://codeclimate.com/github/yan-foto/electron-reload)
@@ -32,7 +33,7 @@ app.on('ready', () {
 });
 ```
 
-Not that the above code only refreshes `WebContent`s of all `BrowserWindow`s. So if you want to have a hard reset (starting a new electron process) you can just pass the path to the electron executable in the `options` object. For example if you already have electron pre-built installed you could just do
+Note that the above code only refreshes `WebContent`s of all `BrowserWindow`s. So if you want to have a hard reset (starting a new electron process) you can just pass the path to the electron executable in the `options` object. For example if you already have electron pre-built installed you could just do
 
 ```js
 require('electron-reload')(__dirname, {
@@ -76,6 +77,8 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **1.2.1**: Remove logging from production code (d'oh)
+ - **1.2.0**: Allow hard reset in multiple browser windows
  - **1.1.0**: Add `app.exit()` in addition to `app.quit()` for hard resets
  - **1.0.3**: Fix hard reset bug
  - **1.0.2**: Detach child so that killing parent doesn't kill it (on windows)
