@@ -37,10 +37,10 @@ module.exports = (glob, options) => {
   // Add each created BrowserWindow to list of maintained items
   app.on('browser-window-created', (e, bw) => {
     browserWindows.push(bw)
-    let i = browserWindows.indexOf(bw)
 
     // Remove closed windows from list of maintained items
     bw.on('closed', function () {
+      let i = browserWindows.indexOf(bw) // Must use current index
       browserWindows.splice(i, 1)
     })
   })
