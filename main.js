@@ -12,7 +12,7 @@ module.exports = (glob, options) => {
   // only effective when the process is restarted (hard reset)
   let appPath = app.getAppPath()
   let config = require(path.join(appPath, 'package.json'))
-  let mainFile = path.join(appPath, config.main)
+  let mainFile = path.join(glob, config.main)
 
   // Watch everything but the node_modules folder and main file
   // main file changes are only effective if hard reset is possible
