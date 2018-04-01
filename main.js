@@ -49,7 +49,7 @@ module.exports = (glob, options) => {
   // A hard reset is only done when the main file has changed
   let eXecutable = options.electron
   if (eXecutable && fs.existsSync(eXecutable)) {
-    chokidar.watch(mainFile).on('change', () => {
+    chokidar.watch(mainFile).once('change', () => {
       // Detaching child is useful when in Windows to let child
       // live after the parent is killed
       let child = spawn(eXecutable, [appPath], {
