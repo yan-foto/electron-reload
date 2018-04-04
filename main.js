@@ -11,13 +11,8 @@ module.exports = (glob, options) => {
   // Main file poses a special case, as its changes are
   // only effective when the process is restarted (hard reset)
   let appPath = app.getAppPath()
-  let mainPath = require(path.join(appPath, 'package.json')).main
-
-  if (mainPath === undefined) {
-    mainPath = 'index.js'
-  }
-
-  let mainFile = path.join(appPath, mainPath)
+  let config = require(path.join(appPath, 'package.json'))
+  let mainFile = path.join(appPath, config.main || 'index.js')
 
   // Watch everything but the node_modules folder and main file
   // main file changes are only effective if hard reset is possible
