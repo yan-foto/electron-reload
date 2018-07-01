@@ -5,6 +5,7 @@ This is (*hopefully*) the simplest way to load contents of all active [`BrowserW
 [![neutron](https://img.shields.io/badge/neutron-compatible-004455.svg)](https://github.com/yan-foto/neutron)
 [![npm](https://img.shields.io/npm/v/electron-reload.svg)](https://www.npmjs.com/package/electron-reload)
 [![Code Climate](https://codeclimate.com/github/yan-foto/electron-reload/badges/gpa.svg)](https://codeclimate.com/github/yan-foto/electron-reload)
+[![Known Vulnerabilities](https://snyk.io/test/github/yan-foto/electron-reload/badge.svg)](https://snyk.io/test/github/yan-foto/electron-reload)
 ![license](https://img.shields.io/npm/l/electron-reload.svg)
 
 **Disclaimer**: this module is in its very early stages and the logic is still not mature enough.
