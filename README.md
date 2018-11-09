@@ -66,7 +66,15 @@ require('electron-reload')(__dirname, {
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
-* `options` (optional): [`chokidar`](https://github.com/paulmillr/chokidar) options plus `electron` property pointing to electron executables. (default: `{ignored: /node_modules|[\/\\]\./}`)
+* `options` (optional) containing: 
+
+   [`chokidar`](https://github.com/paulmillr/chokidar) options
+   
+   `electron` property pointing to electron executables.
+
+   `argv` string array with command line options passed to the executed Electron app. Only used when hard resetting.
+
+`options` will default to `{ignored: /node_modules|[\/\\]\./, argv: []}`.
 
 
 # Why this module?

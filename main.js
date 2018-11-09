@@ -18,11 +18,13 @@ const ignoredPaths = [mainFile, /node_modules|[/\\]\./]
  * @param {String} hardResetMethod method to restart electron
  * @returns {Function} handler to pass to chokidar
  */
-const createHardresetHandler = (eXecutable, hardResetMethod) =>
+const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
   () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    let child = spawn(eXecutable, [appPath], {
+    let args = (argv || []).concat([appPath]);
+    console.log("new args", args);
+    let child = spawn(eXecutable, args, {
       detached: true,
       stdio: 'inherit'
     })
@@ -73,9 +75,10 @@ module.exports = (glob, options = {}) => {
 
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
+  console.log("options", options);
   let eXecutable = options.electron
   if (eXecutable && fs.existsSync(eXecutable)) {
-    chokidar.watch(mainFile).once('change', createHardresetHandler(eXecutable, options.hardResetMethod))
+    chokidar.watch(mainFile).once('change', createHardresetHandler(eXecutable, options.hardResetMethod, options.argv))
   } else {
     console.log('Electron could not be found. No hard resets for you!')
   }
