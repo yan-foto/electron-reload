@@ -1,7 +1,7 @@
-const {app} = require('electron')
+const { app } = require('electron')
 const chokidar = require('chokidar')
 const fs = require('fs')
-const {spawn} = require('child_process')
+const { spawn } = require('child_process')
 const path = require('path')
 
 // Main file poses a special case, as its changes are
@@ -22,7 +22,7 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
   () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    let args = (argv || []).concat([appPath]);
+    let args = (argv || []).concat([appPath])
     let child = spawn(eXecutable, args, {
       detached: true,
       stdio: 'inherit'
@@ -49,7 +49,7 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
 const createWatcher = (glob, options = {}) => {
   // Watch everything but the node_modules folder and main file
   // main file changes are only effective if hard reset is possible
-  let opts = Object.assign({ignored: ignoredPaths}, options)
+  let opts = Object.assign({ ignored: ignoredPaths }, options)
   return chokidar.watch(glob, opts)
 }
 
