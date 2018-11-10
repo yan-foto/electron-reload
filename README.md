@@ -66,10 +66,10 @@ require('electron-reload')(__dirname, {
 # API
 `electron_reload(paths, options)`
 * `paths`: a file, directory or glob pattern to watch
-* `options` (optional) containing: 
+* `options` (optional) containing:
 
    [`chokidar`](https://github.com/paulmillr/chokidar) options
-   
+
    `electron` property pointing to electron executables.
 
    `argv` string array with command line options passed to the executed Electron app. Only used when hard resetting.
@@ -86,6 +86,7 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **1.3.0**: Allow passing arguments to electron executable upon hard resets
  - **1.2.5**: Upgrade dependencies (fix vulnerabilities)
  - **1.2.4**: Use `index.js` as fallback if `main` is not defined in `package.json`
  - **1.2.3**: Fix multiple instances on restart
