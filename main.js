@@ -1,7 +1,7 @@
-const {app} = require('electron')
+const { app } = require('electron')
 const chokidar = require('chokidar')
 const fs = require('fs')
-const {spawn} = require('child_process')
+const { spawn } = require('child_process')
 const path = require('path')
 
 // Main file poses a special case, as its changes are
@@ -18,11 +18,12 @@ const ignoredPaths = [mainFile, /node_modules|[/\\]\./]
  * @param {String} hardResetMethod method to restart electron
  * @returns {Function} handler to pass to chokidar
  */
-const createHardresetHandler = (eXecutable, hardResetMethod) =>
+const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
   () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    let child = spawn(eXecutable, [appPath], {
+    let args = (argv || []).concat([appPath])
+    let child = spawn(eXecutable, args, {
       detached: true,
       stdio: 'inherit'
     })
@@ -48,7 +49,7 @@ const createHardresetHandler = (eXecutable, hardResetMethod) =>
 const createWatcher = (glob, options = {}) => {
   // Watch everything but the node_modules folder and main file
   // main file changes are only effective if hard reset is possible
-  let opts = Object.assign({ignored: ignoredPaths}, options)
+  let opts = Object.assign({ ignored: ignoredPaths }, options)
   return chokidar.watch(glob, opts)
 }
 
@@ -75,7 +76,7 @@ module.exports = (glob, options = {}) => {
   // A hard reset is only done when the main file has changed
   let eXecutable = options.electron
   if (eXecutable && fs.existsSync(eXecutable)) {
-    chokidar.watch(mainFile).once('change', createHardresetHandler(eXecutable, options.hardResetMethod))
+    chokidar.watch(mainFile).once('change', createHardresetHandler(eXecutable, options.hardResetMethod, options.argv))
   } else {
     console.log('Electron could not be found. No hard resets for you!')
   }
