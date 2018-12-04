@@ -56,10 +56,14 @@ const createWatcher = (glob, options = {}) => {
 module.exports = (glob, options = {}) => {
   let browserWindows = []
   let watcher = createWatcher(glob, options)
+  let hardWatcher = createWatcher(mainFile, options)
 
-  // Callback function to be executed when any of the files
-  // defined in given 'glob' is changed.
-  let onChange = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
+  // Callback function to be executed:
+  // I) soft reset: reload browser windows
+  let softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
+  // II) hard reset: restart the whole electron process
+  let eXecutable = options.electron
+  let hardResetHandler = createHardresetHandler(eXecutable, options.hardResetMethod, options.argv)
 
   // Add each created BrowserWindow to list of maintained items
   app.on('browser-window-created', (e, bw) => {
@@ -72,14 +76,21 @@ module.exports = (glob, options = {}) => {
     })
   })
 
+  // Enable default soft reset
+  watcher.on('change', softResetHandler)
+
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
-  let eXecutable = options.electron
   if (eXecutable && fs.existsSync(eXecutable)) {
-    chokidar.watch(mainFile).once('change', createHardresetHandler(eXecutable, options.hardResetMethod, options.argv))
+    if (options.forceHardReset === true) {
+      // Watch every file for hard reset and not only the main file
+      hardWatcher.add(glob)
+      // Stop our default soft reset
+      watcher.close()
+    }
+
+    hardWatcher.on('change', hardResetHandler)
   } else {
     console.log('Electron could not be found. No hard resets for you!')
   }
-
-  watcher.on('change', onChange)
 }
