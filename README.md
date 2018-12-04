@@ -84,6 +84,7 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **1.4.0**: Enable hard reset for all changes (and not only the main file)
  - **1.3.0**: Allow passing arguments to electron executable upon hard resets
  - **1.2.5**: Upgrade dependencies (fix vulnerabilities)
  - **1.2.4**: Use `index.js` as fallback if `main` is not defined in `package.json`
