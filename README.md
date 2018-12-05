@@ -11,8 +11,8 @@ This is (*hopefully*) the simplest way to load contents of all active [`BrowserW
 **Disclaimer**: this module is in its very early stages and the logic is still not mature enough.
 
 # Installation
-```
-npm install electron-reload
+```shell
+npm install --save-dev electron-reload
 ```
 
 # Usage
