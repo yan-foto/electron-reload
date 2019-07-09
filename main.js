@@ -9,7 +9,7 @@ const path = require('path')
 const appPath = app.getAppPath()
 const config = require(path.join(appPath, 'package.json'))
 const mainFile = path.join(appPath, config.main || 'index.js')
-const ignoredPaths = [mainFile, /node_modules|[/\\]\./]
+const ignoredPaths = /node_modules|[/\\]\./
 
 /**
  * Creates a callback for hard resets.
@@ -40,23 +40,9 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
     }
   }
 
-/**
- * Creates main chokidar watcher for soft resets.
- *
- * @param {String|Array<String>} glob path, glob, or array to pass to chokidar
- * @param {Object} options chokidar options
- */
-const createWatcher = (glob, options = {}) => {
-  // Watch everything but the node_modules folder and main file
-  // main file changes are only effective if hard reset is possible
-  let opts = Object.assign({ ignored: ignoredPaths }, options)
-  return chokidar.watch(glob, opts)
-}
-
 module.exports = (glob, options = {}) => {
   let browserWindows = []
-  let watcher = createWatcher(glob, options)
-  let hardWatcher = createWatcher(mainFile, options)
+  let watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
 
   // Callback function to be executed:
   // I) soft reset: reload browser windows
@@ -82,6 +68,8 @@ module.exports = (glob, options = {}) => {
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
   if (eXecutable && fs.existsSync(eXecutable)) {
+    let hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options))
+
     if (options.forceHardReset === true) {
       // Watch every file for hard reset and not only the main file
       hardWatcher.add(glob)
@@ -89,7 +77,7 @@ module.exports = (glob, options = {}) => {
       watcher.close()
     }
 
-    hardWatcher.on('change', hardResetHandler)
+    hardWatcher.once('change', hardResetHandler)
   } else {
     console.log('Electron could not be found. No hard resets for you!')
   }
