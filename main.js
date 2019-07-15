@@ -2,14 +2,14 @@ const { app } = require('electron')
 const chokidar = require('chokidar')
 const fs = require('fs')
 const { spawn } = require('child_process')
-const path = require('path')
 
+const appPath = app.getAppPath()
+const ignoredPaths = /node_modules|[/\\]\./
 // Main file poses a special case, as its changes are
 // only effective when the process is restarted (hard reset)
-const appPath = app.getAppPath()
-const config = require(path.join(appPath, 'package.json'))
-const mainFile = path.join(appPath, config.main || 'index.js')
-const ignoredPaths = /node_modules|[/\\]\./
+// We assume that electron-reload is required by the main
+// file of the electron application
+const mainFile = module.parent.filename
 
 /**
  * Creates a callback for hard resets.
