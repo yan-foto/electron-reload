@@ -6,8 +6,5 @@ node_js:
 
 install: npm install
 
-before_script:
-  - npm install -g standard
-
 script:
-  - standard
+  - npm run lint
