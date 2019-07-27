@@ -22,8 +22,8 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
   () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    let args = (argv || []).concat([appPath])
-    let child = spawn(eXecutable, args, {
+    const args = (argv || []).concat([appPath])
+    const child = spawn(eXecutable, args, {
       detached: true,
       stdio: 'inherit'
     })
@@ -41,15 +41,15 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
   }
 
 module.exports = (glob, options = {}) => {
-  let browserWindows = []
-  let watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
+  const browserWindows = []
+  const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
 
   // Callback function to be executed:
   // I) soft reset: reload browser windows
-  let softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
+  const softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
   // II) hard reset: restart the whole electron process
-  let eXecutable = options.electron
-  let hardResetHandler = createHardresetHandler(eXecutable, options.hardResetMethod, options.argv)
+  const eXecutable = options.electron
+  const hardResetHandler = createHardresetHandler(eXecutable, options.hardResetMethod, options.argv)
 
   // Add each created BrowserWindow to list of maintained items
   app.on('browser-window-created', (e, bw) => {
@@ -57,7 +57,7 @@ module.exports = (glob, options = {}) => {
 
     // Remove closed windows from list of maintained items
     bw.on('closed', function () {
-      let i = browserWindows.indexOf(bw) // Must use current index
+      const i = browserWindows.indexOf(bw) // Must use current index
       browserWindows.splice(i, 1)
     })
   })
@@ -68,7 +68,7 @@ module.exports = (glob, options = {}) => {
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
   if (eXecutable && fs.existsSync(eXecutable)) {
-    let hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options))
+    const hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options))
 
     if (options.forceHardReset === true) {
       // Watch every file for hard reset and not only the main file
