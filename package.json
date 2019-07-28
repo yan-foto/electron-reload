@@ -4,7 +4,8 @@
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "main.js",
   "scripts": {
-    "lint": "eslint main.js"
+    "lint": "standard",
+    "lint:fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -25,11 +26,6 @@
     "chokidar": "^2.0.4"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
-    "eslint-config-standard": "^13.0.1",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0"
+    "standard": "^13.1.0"
   }
 }
