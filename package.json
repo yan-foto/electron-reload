@@ -6,7 +6,8 @@
   "types": "main.d.ts",
   "scripts": {
     "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint:fix": "standard --fix",
+    "tsc": "tsc --declaration --emitDeclarationOnly main.ts"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "chokidar": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^13.1.0"
+    "standard": "^13.1.0",
+    "typescript": "^3.5.3"
   }
 }
