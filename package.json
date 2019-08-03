@@ -3,6 +3,10 @@
   "version": "1.4.1",
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "main.js",
+  "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yan-foto/electron-reload.git"
@@ -20,5 +24,8 @@
   },
   "dependencies": {
     "chokidar": "^2.0.4"
+  },
+  "devDependencies": {
+    "standard": "^13.1.0"
   }
 }
