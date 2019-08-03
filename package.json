@@ -28,6 +28,8 @@
     "chokidar": "^3.0.2"
   },
   "devDependencies": {
+    "@types/node": "^12.6.9",
+    "electron": "^6.0.0",
     "standard": "^13.1.0",
     "typescript": "^3.5.3"
   }
