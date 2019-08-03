@@ -84,6 +84,9 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **1.5.0**:
+   - Upgrade `chokidar` from v2 to v3 (lighter/faster installation)
+   - Add friendly linting in dev mode (`node run lint`) and fix CI linting issues (see [#62](https://github.com/yan-foto/electron-reload/pull/62))
  - **1.4.1**: Fix two minor bugs
    - Wrong globbing when doing hard reset ([`#58`](https://github.com/yan-foto/electron-reload/issues/58))
    - Issues with locating main file in specific project structures ([`#57`](https://github.com/yan-foto/electron-reload/issues/57))
