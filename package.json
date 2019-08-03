@@ -3,6 +3,7 @@
   "version": "1.5.0",
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "main.js",
+  "types": "main.d.ts",
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix"
