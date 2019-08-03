@@ -23,7 +23,7 @@
     "url": "https://github.com/yan-foto/electron-reload/issues"
   },
   "dependencies": {
-    "chokidar": "^2.0.4"
+    "chokidar": "^3.0.2"
   },
   "devDependencies": {
     "standard": "^13.1.0"
