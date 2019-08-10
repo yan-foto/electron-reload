@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "tsc": "tsc --declaration --emitDeclarationOnly main.ts"
+    "prepublishOnly": "tsc --declaration main.ts"
   },
   "repository": {
     "type": "git",
