@@ -18,10 +18,11 @@ const ignoredPaths = [mainFile, /node_modules|[/\\]\./];
  * @param hardResetMethod method to restart electron
  * @returns handler to pass to chokidar
  */
-const createHardresetHandler = (eXecutable: string, hardResetMethod: string = ""): (() => void) => () => {
+const createHardresetHandler = (eXecutable: string, hardResetMethod: string, argv?: any): (() => void) => () => {
   // Detaching child is useful when in Windows to let child
   // live after the parent is killed
-  let child = spawn(eXecutable, [appPath], {
+  const args = (argv || []).concat([appPath]);
+  const child = spawn(eXecutable, args, {
     detached: true,
     stdio: "inherit",
   });
@@ -38,46 +39,34 @@ const createHardresetHandler = (eXecutable: string, hardResetMethod: string = ""
   }
 };
 
-/**
- * Creates main chokidar watcher for soft resets.
- *
- * @param glob path, glob, or array to pass to chokidar
- * @param options chokidar options
- */
-const createWatcher = (glob: string | string[], options: { electron?: string } = {}): chokidar.FSWatcher => {
-  // Watch everything but the node_modules folder and main file
-  // main file changes are only effective if hard reset is possible
-  let opts = Object.assign({ ignored: ignoredPaths }, options);
-  return chokidar.watch(glob, opts);
-};
-
-export default (glob: string | string[], options: { electron?: string; hardResetMethod?: string } = {}): void => {
+export default (glob: string | string[], options: { electron: string; hardResetMethod: string; forceHardReset?: boolean; argv?: any }): void => {
   let browserWindows: BrowserWindow[] = [];
-  let watcher = createWatcher(glob, options);
+  const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options));
 
-  // Callback function to be executed when any of the files
-  // defined in given 'glob' is changed.
-  let onChange = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache());
+  // Callback function to be executed:
+  // I) soft reset: reload browser windows
+  const softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache());
+  // II) hard reset: restart the whole electron process
+  const eXecutable = options.electron;
+  const hardResetHandler = createHardresetHandler(eXecutable, options.hardResetMethod, options.argv);
 
-  // Add each created BrowserWindow to list of maintained items
-  app.on("browser-window-created", (e, bw) => {
-    browserWindows.push(bw);
-
-    // Remove closed windows from list of maintained items
-    bw.on("closed", function() {
-      let i = browserWindows.indexOf(bw); // Must use current index
-      browserWindows.splice(i, 1);
-    });
-  });
+  // Enable default soft reset
+  watcher.on("change", softResetHandler);
 
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
-  let eXecutable = options.electron;
   if (eXecutable && fs.existsSync(eXecutable)) {
-    chokidar.watch(mainFile).once("change", createHardresetHandler(eXecutable, options.hardResetMethod));
+    const hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options));
+
+    if (options.forceHardReset === true) {
+      // Watch every file for hard reset and not only the main file
+      hardWatcher.add(glob);
+      // Stop our default soft reset
+      watcher.close();
+    }
+
+    hardWatcher.once("change", hardResetHandler);
   } else {
     console.log("Electron could not be found. No hard resets for you!");
   }
-
-  watcher.on("change", onChange);
 };
