@@ -1,15 +1,18 @@
 const { app } = require('electron')
+const { spawn } = require('child_process')
+
 const chokidar = require('chokidar')
 const fs = require('fs')
-const { spawn } = require('child_process')
+const path = require('path')
 
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
+
 // Main file poses a special case, as its changes are
 // only effective when the process is restarted (hard reset)
 // We assume that electron-reload is required by the main
 // file of the electron application
-const mainFile = module.parent.filename
+const mainFile = path.normalize((module.parent || {}).filename || __filename)
 
 /**
  * Creates a callback for hard resets.
@@ -42,7 +45,11 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
 
 module.exports = (glob, options = {}) => {
   const browserWindows = []
-  const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
+
+  const ignored = [ignoredPaths, mainFile].filter(Boolean)
+  const watcherDirectory = path.resolve(appPath, glob)
+
+  const watcher = chokidar.watch(watcherDirectory, Object.assign({ ignored }, options))
 
   // Callback function to be executed:
   // I) soft reset: reload browser windows
