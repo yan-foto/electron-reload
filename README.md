@@ -12,10 +12,18 @@ This is (*hopefully*) the simplest way to load contents of all active [`BrowserW
 
 # Installation
 ```
-npm install electron-reload
+npm install electron-reload --save-dev
 ```
 
 # Usage
+electron-reload is meant to be a development dependency so to avoid throwing `Cannot find module 'electron-reload'` in a production environment wrap the `require` statement with a try/catch block.
+
+```js
+try {
+  require('electron-reload')(__dirname);
+} catch(_) {}
+```
+
 Just initialize this module with desired glob or file path to watch and let it refresh electron browser windows as targets are changed:
 
 ```js
