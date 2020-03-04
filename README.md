@@ -26,7 +26,7 @@ const {app, BrowserWindow} = require('electron');
 require('electron-reload')(__dirname);
 
 // Standard stuff
-app.on('ready', () {
+app.on('ready', () => {
   let mainWindow = new BrowserWindow({width: 800, height: 600});
 
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
