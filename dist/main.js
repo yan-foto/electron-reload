@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = require("fs");
+var fs = require("fs");
 var child_process_1 = require("child_process");
 var electron_1 = require("electron");
-var chokidar_1 = require("chokidar");
+var chokidar = require("chokidar");
 var appPath = electron_1.app.getAppPath();
 var ignoredPaths = /node_modules|[/\\]\./;
 // Main file poses a special case, as its changes are
@@ -42,7 +42,7 @@ exports.default = (function (glob, options) {
     var _a, _b, _c;
     var mainFile = (_c = (_a = options.mainFile) !== null && _a !== void 0 ? _a : (_b = module.parent) === null || _b === void 0 ? void 0 : _b.filename) !== null && _c !== void 0 ? _c : '';
     var browserWindows = [];
-    var watcher = chokidar_1.default.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options));
+    var watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options));
     // Callback function to be executed:
     // I) soft reset: reload browser windows
     var softResetHandler = function () {
@@ -64,8 +64,8 @@ exports.default = (function (glob, options) {
     watcher.on('change', softResetHandler);
     // Preparing hard reset if electron executable is given in options
     // A hard reset is only done when the main file has changed
-    if (typeof eXecutable === 'string' && fs_1.default.existsSync(eXecutable)) {
-        var hardWatcher = chokidar_1.default.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options));
+    if (typeof eXecutable === 'string' && fs.existsSync(eXecutable)) {
+        var hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options));
         if (options.forceHardReset === true) {
             // Watch every file for hard reset and not only the main file
             hardWatcher.add(glob);

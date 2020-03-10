@@ -5,8 +5,8 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint main.ts --ext .ts",
+    "lint:fix": "eslint main.ts --ext .ts --fix",
     "build": "npm run lint:fix && ./node_modules/.bin/tsc"
   },
   "repository": {

@@ -1,7 +1,7 @@
-import fs from 'fs'
+import * as fs from 'fs'
 import { spawn } from 'child_process'
 import { app } from 'electron'
-import chokidar from 'chokidar'
+import * as chokidar from 'chokidar'
 
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./

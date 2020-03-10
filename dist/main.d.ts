@@ -1,4 +1,4 @@
-import chokidar from 'chokidar';
+import * as chokidar from 'chokidar';
 declare const _default: (glob: string | string[], options?: Partial<chokidar.WatchOptions & {
     hardResetMethod?: string | undefined;
     argv?: string[] | undefined;
