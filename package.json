@@ -2,10 +2,12 @@
   "name": "electron-reload",
   "version": "1.5.0",
   "description": "Simplest way to reload an electron app on file changes!",
-  "main": "main.js",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
-    "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "build": "npm run lint:fix && ./node_modules/.bin/tsc"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,19 @@
     "chokidar": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^13.1.0"
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "electron": "^8.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-standard-with-typescript": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "ts-standard": "^6.0.0",
+    "typescript": "^3.5.0"
+  },
+  "peerDependencies": {
+    "electron": "^8.1.1"
   }
 }
