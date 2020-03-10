@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "target": "es5",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "strict": true,
+    "outDir": "dist",
+    "noErrorTruncation": true,
+    "lib": ["es2015"],
+    "skipLibCheck": true,
+    "declaration": true
+  },
+  "exclude": [
+    "**/node_modules/**/*",
+    "**/__tests__",
+    "./build/**/*",
+    "./dist/**/*"
+  ]
+}
