@@ -1,6 +1,6 @@
 {
   "name": "electron-reload",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Simplest way to reload an electron app on file changes!",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
