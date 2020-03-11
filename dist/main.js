@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var child_process_1 = require("child_process");
-var electron_1 = require("electron");
-var chokidar = require("chokidar");
-var appPath = electron_1.app.getAppPath();
-var ignoredPaths = /node_modules|[/\\]\./;
+const fs = require("fs");
+const child_process_1 = require("child_process");
+const electron_1 = require("electron");
+const chokidar = require("chokidar");
+const appPath = electron_1.app.getAppPath();
+const ignoredPaths = /node_modules|[/\\]\./;
 // Main file poses a special case, as its changes are
 // only effective when the process is restarted (hard reset)
 // We assume that electron-reload is required by the main
@@ -17,11 +17,11 @@ var ignoredPaths = /node_modules|[/\\]\./;
  * @param {String} eXecutable path to electron executable
  * @param {String} hardResetMethod method to restart electron
  */
-var createHardresetHandler = function (eXecutable, hardResetMethod, argv) { return function () {
+const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    var args = (argv !== null && argv !== void 0 ? argv : []).concat([appPath]);
-    var child = child_process_1.spawn(eXecutable, args, {
+    const args = (argv !== null && argv !== void 0 ? argv : []).concat([appPath]);
+    const child = child_process_1.spawn(eXecutable, args, {
         detached: true,
         stdio: 'inherit'
     });
@@ -36,27 +36,24 @@ var createHardresetHandler = function (eXecutable, hardResetMethod, argv) { retu
     else {
         electron_1.app.quit();
     }
-}; };
-exports.default = (function (glob, options) {
-    if (options === void 0) { options = {}; }
+};
+exports.default = (glob, options = {}) => {
     var _a, _b, _c;
-    var mainFile = (_c = (_a = options.mainFile) !== null && _a !== void 0 ? _a : (_b = module.parent) === null || _b === void 0 ? void 0 : _b.filename) !== null && _c !== void 0 ? _c : '';
-    var browserWindows = [];
-    var watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options));
+    const mainFile = (_c = (_a = options.mainFile) !== null && _a !== void 0 ? _a : (_b = module.parent) === null || _b === void 0 ? void 0 : _b.filename) !== null && _c !== void 0 ? _c : '';
+    const browserWindows = [];
+    const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options));
     // Callback function to be executed:
     // I) soft reset: reload browser windows
-    var softResetHandler = function () {
-        return browserWindows.forEach(function (bw) { return bw.webContents.reloadIgnoringCache(); });
-    };
+    const softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache());
     // II) hard reset: restart the whole electron process
-    var eXecutable = options.electron;
-    var hardResetHandler = createHardresetHandler(eXecutable !== null && eXecutable !== void 0 ? eXecutable : '', options.hardResetMethod, options.argv);
+    const eXecutable = options.electron;
+    const hardResetHandler = createHardresetHandler(eXecutable !== null && eXecutable !== void 0 ? eXecutable : '', options.hardResetMethod, options.argv);
     // Add each created BrowserWindow to list of maintained items
-    electron_1.app.on('browser-window-created', function (_e, bw) {
+    electron_1.app.on('browser-window-created', (_e, bw) => {
         browserWindows.push(bw);
         // Remove closed windows from list of maintained items
         bw.on('closed', function () {
-            var i = browserWindows.indexOf(bw); // Must use current index
+            const i = browserWindows.indexOf(bw); // Must use current index
             browserWindows.splice(i, 1);
         });
     });
@@ -65,7 +62,7 @@ exports.default = (function (glob, options) {
     // Preparing hard reset if electron executable is given in options
     // A hard reset is only done when the main file has changed
     if (typeof eXecutable === 'string' && fs.existsSync(eXecutable)) {
-        var hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options));
+        const hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options));
         if (options.forceHardReset === true) {
             // Watch every file for hard reset and not only the main file
             hardWatcher.add(glob);
@@ -77,5 +74,5 @@ exports.default = (function (glob, options) {
     else {
         console.log('Electron could not be found. No hard resets for you!');
     }
-});
+};
 //# sourceMappingURL=main.js.map
