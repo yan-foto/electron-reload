@@ -40,6 +40,30 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
     }
   }
 
+/**
+ * @param {string | string[]} glob
+ * @param {
+   {
+     persistent ? : boolean;
+     ignored ? : any;
+     ignoreInitial ? : boolean;
+     followSymlinks ? : boolean;
+     cwd ? : string;
+     disableGlobbing ? : boolean;
+     usePolling ? : boolean;
+     useFsEvents ? : boolean;
+     alwaysStat ? : boolean;
+     depth ? : number;
+     interval ? : number;
+     binaryInterval ? : number;
+     ignorePermissionErrors ? : boolean;
+     atomic ? : boolean | number;
+     awaitWriteFinish ? : AwaitWriteFinishOptions | boolean;
+   } | undefined
+ }
+ options
+ * @returns {void}
+ */
 module.exports = (glob, options = {}) => {
   const browserWindows = []
   const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
