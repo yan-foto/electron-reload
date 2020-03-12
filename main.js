@@ -79,6 +79,9 @@ module.exports = (glob, options = {}) => {
 
     hardWatcher.once('change', hardResetHandler)
   } else {
-    console.log('Electron could not be found. No hard resets for you!')
+    // Only shows log if eXecutable is not undefined
+    if (eXecutable) {
+      console.log('Electron could not be found. No hard resets for you!')
+    }
   }
 }
