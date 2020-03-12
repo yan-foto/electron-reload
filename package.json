@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint:fix": "standard --fix",
+    "declaration:build": "rimraf index.d.ts && tsc -p declaration.tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,9 @@
     "chokidar": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^13.1.0"
+    "@types/node": "^13.9.0",
+    "rimraf": "^3.0.2",
+    "standard": "^13.1.0",
+    "typescript": "^3.8.3"
   }
 }
