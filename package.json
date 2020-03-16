@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "declaration:build": "rimraf index.d.ts && tsc -p declaration.tsconfig.json"
+    "declaration:build": "rimraf index.d.ts && tsc -p declaration.tsconfig.json",
+    "prepublishOnly": "npm run --silent declaration:build"
   },
   "repository": {
     "type": "git",
