@@ -11,7 +11,6 @@
     "noErrorTruncation": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": ".",
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": true,
