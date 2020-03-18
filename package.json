@@ -2,12 +2,13 @@
   "name": "electron-reload",
   "version": "2.0.0",
   "description": "Simplest way to reload an electron app on file changes!",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "main.js",
+  "types": "main.d.ts",
   "scripts": {
-    "lint": "./node_modules/.bin/ts-standard main.ts --ext .ts",
-    "lint:fix": "./node_modules/.bin/ts-standard --fix",
-    "build": "./node_modules/.bin/rimraf dist && npm run lint:fix && ./node_modules/.bin/tsc"
+    "lint": "./node_modules/.bin/standard",
+    "lint:fix": "./node_modules/.bin/standard --fix",
+    "build": "./node_modules/.bin/rimraf main.d.ts && npm run lint:fix && ./node_modules/.bin/tsc",
+    "prepublishOnly": "npm run --silent build"
   },
   "repository": {
     "type": "git",
@@ -30,8 +31,8 @@
   "devDependencies": {
     "electron": "^8.1.1",
     "rimraf": "^3.0.2",
-    "ts-standard": "^6.0.0",
-    "typescript": "^3.5.0"
+    "standard": "^14.3.3",
+    "typescript": "^3.8.3"
   },
   "peerDependencies": {
     "electron": "^8.1.1"

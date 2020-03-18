@@ -1,25 +1,22 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2015",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "lib": ["es2015"],
     "module": "CommonJS",
     "moduleResolution": "node",
+    "noErrorTruncation": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "outDir": ".",
     "removeComments": false,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "outDir": "dist",
-    "noErrorTruncation": true,
-    "lib": ["es2015"],
-    "skipLibCheck": true,
-    "declaration": true
+    "target": "ES2015"
   },
-  "exclude": [
-    "**/node_modules/**/*",
-    "**/__tests__",
-    "./build/**/*",
-    "./dist/**/*"
-  ]
+  "exclude": ["**/__tests__", "**/node_modules/**/*"]
 }

@@ -1,30 +1,23 @@
-import * as fs from 'fs'
-import { spawn } from 'child_process'
-import { app } from 'electron'
-import * as chokidar from 'chokidar'
+const { app } = require('electron')
+const chokidar = require('chokidar')
+const fs = require('fs')
+const { spawn } = require('child_process')
 
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
-// Main file poses a special case, as its changes are
-// only effective when the process is restarted (hard reset)
-// We assume that electron-reload is required by the main
-// file of the electron application
-// const mainFile = module.parent.filename;
 
 /**
  * Creates a callback for hard resets.
  *
- * @param {String} eXecutable path to electron executable
- * @param {String} hardResetMethod method to restart electron
+ * @param {string} eXecutable path to electron executable
+ * @param {string} hardResetMethod method to restart electron
+ * @param {string[]} hardResetMethod method to restart electron
+ * @returns {Function} handler to pass to chokidar
  */
-const createHardresetHandler = (
-  eXecutable: string,
-  hardResetMethod?: string,
-  argv?: string[]
-) => () => {
+const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
   // Detaching child is useful when in Windows to let child
   // live after the parent is killed
-  const args = (argv ?? []).concat([appPath])
+  const args = [appPath].concat(argv || [])
   const child = spawn(eXecutable, args, {
     detached: true,
     stdio: 'inherit'
@@ -42,20 +35,28 @@ const createHardresetHandler = (
   }
 }
 
-export default (
-  glob: string | string[],
-  options: Partial<
-  chokidar.WatchOptions & {
-    hardResetMethod?: string
-    argv?: typeof process['argv']
-    forceHardReset?: boolean
-    electron?: string
-    mainFile?: string
-  }
-  > = {}
-): void => {
-  const mainFile = options.mainFile ?? module.parent?.filename ?? ''
-  const browserWindows: Electron.BrowserWindow[] = []
+/**
+ * @typedef {Object} ExtraOptions
+ * @property {string} [hardResetMethod]
+ * @property {string[]} [argv]
+ * @property {boolean} [forceHardReset]
+ * @property {string} [electron]
+ * @property {string} [mainFile]
+ */
+
+/**
+ * @param {string | string[]} glob
+ * @param { Partial<chokidar.WatchOptions & ExtraOptions> } [options]
+ * @returns {void}
+ */
+module.exports = (glob, options = {}) => {
+  // Main file poses a special case, as its changes are
+  // only effective when the process is restarted (hard reset)
+  // We assume that electron-reload is required by the main
+  // file of the electron application if a path is not provided
+  const mainFile =
+    options.mainFile || module.parent ? module.parent.filename || '' : ''
+  const browserWindows = []
   const watcher = chokidar.watch(
     glob,
     Object.assign({ ignored: [ignoredPaths, mainFile] }, options)
@@ -63,12 +64,12 @@ export default (
 
   // Callback function to be executed:
   // I) soft reset: reload browser windows
-  const softResetHandler = (): void =>
+  const softResetHandler = () =>
     browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
   // II) hard reset: restart the whole electron process
   const eXecutable = options.electron
   const hardResetHandler = createHardresetHandler(
-    eXecutable ?? '',
+    eXecutable || '',
     options.hardResetMethod,
     options.argv
   )
