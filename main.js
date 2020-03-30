@@ -11,13 +11,13 @@ const ignoredPaths = /node_modules|[/\\]\./
  *
  * @param {string} eXecutable path to electron executable
  * @param {string} hardResetMethod method to restart electron
- * @param {string[]} hardResetMethod method to restart electron
+ * @param {string[]} argv arguments to restart electron with
  * @returns {Function} handler to pass to chokidar
  */
 const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
   // Detaching child is useful when in Windows to let child
   // live after the parent is killed
-  const args = [appPath].concat(argv || [])
+  const args = [appPath].concat(argv)
   const child = spawn(eXecutable, args, {
     detached: true,
     stdio: 'inherit'
@@ -36,26 +36,40 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
 }
 
 /**
- * @typedef {Object} ExtraOptions
- * @property {string} [hardResetMethod]
- * @property {string[]} [argv]
- * @property {boolean} [forceHardReset]
- * @property {string} [electron]
- * @property {string} [mainFile]
- */
-
-/**
  * @param {string | string[]} glob
- * @param { Partial<chokidar.WatchOptions & ExtraOptions> } [options]
+ * @param {Partial<chokidar.WatchOptions> & {@property {string} [hardResetMethod] @property {string[]} [argv] @property {boolean} [forceHardReset] @property {string} electron @property {string} [mainFile]}} [options]
  * @returns {void}
  */
-module.exports = (glob, options = {}) => {
+module.exports = (
+  glob,
+  options = {
+    alwaysStat: undefined,
+    argv: [],
+    atomic: undefined,
+    awaitWriteFinish: undefined,
+    binaryInterval: undefined,
+    cwd: undefined,
+    depth: undefined,
+    disableGlobbing: undefined,
+    electron: '',
+    followSymlinks: undefined,
+    forceHardReset: undefined,
+    hardResetMethod: undefined,
+    ignoreInitial: undefined,
+    ignorePermissionErrors: undefined,
+    ignored: undefined,
+    interval: undefined,
+    mainFile: module.parent.filename,
+    persistent: undefined,
+    useFsEvents: undefined,
+    usePolling: undefined
+  }
+) => {
   // Main file poses a special case, as its changes are
   // only effective when the process is restarted (hard reset)
   // We assume that electron-reload is required by the main
   // file of the electron application if a path is not provided
-  const mainFile =
-    options.mainFile || module.parent ? module.parent.filename || '' : ''
+  const mainFile = options.mainFile
   const browserWindows = []
   const watcher = chokidar.watch(
     glob,
@@ -69,7 +83,7 @@ module.exports = (glob, options = {}) => {
   // II) hard reset: restart the whole electron process
   const eXecutable = options.electron
   const hardResetHandler = createHardresetHandler(
-    eXecutable || '',
+    eXecutable,
     options.hardResetMethod,
     options.argv
   )

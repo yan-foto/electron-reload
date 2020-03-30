@@ -1,9 +1,23 @@
-declare function _exports(glob: string | string[], options?: Partial<import("chokidar").WatchOptions & ExtraOptions> | undefined): void;
+declare function _exports(glob: string | string[], options?: {
+    alwaysStat: undefined;
+    argv: never[];
+    atomic: undefined;
+    awaitWriteFinish: undefined;
+    binaryInterval: undefined;
+    cwd: undefined;
+    depth: undefined;
+    disableGlobbing: undefined;
+    electron: string;
+    followSymlinks: undefined;
+    forceHardReset: undefined;
+    hardResetMethod: undefined;
+    ignoreInitial: undefined;
+    ignorePermissionErrors: undefined;
+    ignored: undefined;
+    interval: undefined;
+    mainFile: any;
+    persistent: undefined;
+    useFsEvents: undefined;
+    usePolling: undefined;
+}): void;
 export = _exports;
-export type ExtraOptions = {
-    hardResetMethod?: string;
-    argv?: string[];
-    forceHardReset?: boolean;
-    electron?: string;
-    mainFile?: string;
-};
