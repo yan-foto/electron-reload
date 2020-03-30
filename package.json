@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/standard",
     "lint:fix": "./node_modules/.bin/standard --fix",
-    "build": "./node_modules/.bin/rimraf main.d.ts && npm run lint:fix && ./node_modules/.bin/tsc",
+    "build": "npm run lint:fix && ./node_modules/.bin/tsc",
     "prepublishOnly": "npm run --silent build"
   },
   "repository": {
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "electron": "^8.1.1",
-    "rimraf": "^3.0.2",
     "standard": "^14.3.3",
     "typescript": "^3.8.3"
   },

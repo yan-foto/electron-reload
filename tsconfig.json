@@ -17,5 +17,6 @@
     "strict": true,
     "target": "ES2015"
   },
-  "exclude": ["**/__tests__", "**/node_modules/**/*"]
+
+  "exclude": ["**/__tests__", "**/node_modules/**/*", "main.d.ts"]
 }
