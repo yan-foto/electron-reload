@@ -9,7 +9,7 @@ const ignoredPaths = /node_modules|[/\\]\./
 // only effective when the process is restarted (hard reset)
 // We assume that electron-reload is required by the main
 // file of the electron application
-const mainFile = module.parent.filename
+const assumedMainFile = module.parent && module.parent.filename
 
 /**
  * Creates a callback for hard resets.
@@ -42,6 +42,7 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
 
 module.exports = (glob, options = {}) => {
   const browserWindows = []
+  const mainFile = options.mainFile || assumedMainFile
   const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
 
   // Callback function to be executed:
