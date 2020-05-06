@@ -10,14 +10,22 @@ const ignoredPaths = /node_modules|[/\\]\./;
  * Creates a callback for hard resets.
  *
  * @param {string} eXecutable path to electron executable
- * @param {string} hardResetMethod method to restart electron
- * @param {string[]} argv arguments to restart electron with
+ * @param {string[]} entryFile path to the .js entry file to launch
+ * @param {string} [hardResetMethod] method to restart electron
+ * @param {string[]} [appArgv] arguments to restart the app with
+ * @param {string[]} [electronArgv] arguments to restart electron with
  * @returns {Function} handler to pass to chokidar
  */
-const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
+const createHardresetHandler = (
+  eXecutable,
+  entryFile,
+  hardResetMethod,
+  appArgv,
+  electronArgv
+) => () => {
   // Detaching child is useful when in Windows to let child
   // live after the parent is killed
-  const args = [appPath].concat(argv || []);
+  const args = (electronArgv || []).concat(entryFile).concat(appArgv || []);
   const child = spawn(eXecutable, args, {
     detached: true,
     stdio: "inherit",
@@ -43,26 +51,11 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) => () => {
 module.exports = (
   glob,
   options = {
-    alwaysStat: undefined,
     argv: [],
-    atomic: undefined,
-    awaitWriteFinish: undefined,
-    binaryInterval: undefined,
-    cwd: undefined,
-    depth: undefined,
-    disableGlobbing: undefined,
+    appArgv: [],
+    electronArgv: [],
     electron: "",
-    followSymlinks: undefined,
-    forceHardReset: undefined,
-    hardResetMethod: undefined,
-    ignoreInitial: undefined,
-    ignorePermissionErrors: undefined,
-    ignored: undefined,
-    interval: undefined,
     mainFile: module.parent.filename,
-    persistent: undefined,
-    useFsEvents: undefined,
-    usePolling: undefined,
   }
 ) => {
   // Main file poses a special case, as its changes are
@@ -84,8 +77,10 @@ module.exports = (
   const eXecutable = options.electron;
   const hardResetHandler = createHardresetHandler(
     eXecutable,
+    mainFile,
     options.hardResetMethod,
-    options.argv
+    options.appArgv,
+    options.electronArgv
   );
 
   // Add each created BrowserWindow to list of maintained items
@@ -125,11 +120,13 @@ module.exports = (
 
 /**
  * @typedef Options
+ * @property {string} electron path to the electron executable
  * @property {string} [hardResetMethod]
- * @property {string[]} [argv]
+ * @property {string[]} [appArgv] args for the application
+ * @property {string[]} [electronArgv] args for the electron executable
+ * @property {string[]} [argv] Args for chokidar
  * @property {boolean} [forceHardReset]
- * @property {string} electron
- * @property {string} [mainFile]
+ * @property {string} [mainFile] path to the .js file to launch
  * @property {boolean} [persistent] Indicates whether the process should continue to run as long as files are being watched. If set to `false` when using `fsevents` to watch, no more events will be emitted after `ready`, even if the process continues to run.
  * @property {*} [ignored] ([anymatch](https://github.com/es128/anymatch)-compatible definition) Defines files/paths to be ignored. The whole relative or absolute path is tested, not just filename. If a function with two arguments is provided, it gets called twice per path - once with a single argument (the path), second time with two arguments (the path and the [`fs.Stats`](http://nodejs.org/api/fs.html#fs_class_fs_stats) object of that path).
  * @property {boolean} [ignoreInitial] If set to `false` then `add`/`addDir` events are also emitted for matching paths while instantiating the watching as chokidar discovers these file paths (before the `ready` event).
