@@ -9,7 +9,7 @@ const ignoredPaths = /node_modules|[/\\]\./
 // only effective when the process is restarted (hard reset)
 // We assume that electron-reload is required by the main
 // file of the electron application
-const mainFile = module.parent.filename
+const mainFile = module.parent ? module.parent.filename : module.filename
 
 /**
  * Creates a callback for hard resets.
