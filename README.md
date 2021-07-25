@@ -59,7 +59,8 @@ require('electron-reload')(__dirname, {
 * `options` (optional) containing:
   - [`chokidar`](https://github.com/paulmillr/chokidar) options
   - `electron` property pointing to electron executables.
-  - `argv` string array with command line options passed to the executed Electron app. Only used when hard resetting.
+  - `electronArgv` string array with command line options passed to the Electron executable. Only used when hard resetting.
+  - `appArgv`: string array with command line options passed to the Electron app. Only used when hard resetting.
   - `forceHardReset`: enables hard reset for **every** file change and not only the main file
 
   `options` will default to `{ignored: /node_modules|[\/\\]\./, argv: []}`.

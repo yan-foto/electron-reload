@@ -14,15 +14,19 @@ const mainFile = module.parent.filename
 /**
  * Creates a callback for hard resets.
  *
- * @param {String} eXecutable path to electron executable
- * @param {String} hardResetMethod method to restart electron
- * @returns {Function} handler to pass to chokidar
+ * @param {string} eXecutable path to electron executable
+ * @param {string} hardResetMethod method to restart electron
+ * @param {string[]} eArgv arguments passed to electron
+ * @param {string[]} aArgv arguments passed to the application
+ * @returns {function} handler to pass to chokidar
  */
-const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
+const createHardresetHandler = (eXecutable, hardResetMethod, eArgv, aArgv) =>
   () => {
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
-    const args = (argv || []).concat([appPath])
+    const args = (eArgv || [])
+      .concat([appPath])
+      .concat(aArgv || [])
     const child = spawn(eXecutable, args, {
       detached: true,
       stdio: 'inherit'
@@ -48,7 +52,11 @@ module.exports = function elecronReload (glob, options = {}) {
   const softResetHandler = () => browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
   // II) hard reset: restart the whole electron process
   const eXecutable = options.electron
-  const hardResetHandler = createHardresetHandler(eXecutable, options.hardResetMethod, options.argv)
+  const hardResetHandler = createHardresetHandler(
+    eXecutable,
+    options.hardResetMethod,
+    options.electronArgv,
+    options.appArgv)
 
   // Add each created BrowserWindow to list of maintained items
   app.on('browser-window-created', (e, bw) => {

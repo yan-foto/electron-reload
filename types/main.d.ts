@@ -10,7 +10,12 @@ export interface ElectronReloadOptions extends WatchOptions {
      * Arguments passed to the electron binary (relevant for hard
      * resets).
      */
-    argv?: [string],
+    electronArgv?: [string],
+    /**
+     * Arguments passed to the application (relevant for hard
+     * resets).
+     */
+    appArgv?: [string]
     /**
      * Determines how to terminate electron in case of hard resets.
      * See 'https://www.electronjs.org/docs/api/app' for details.
