@@ -39,8 +39,7 @@ const createHardresetHandler = (eXecutable, hardResetMethod, argv) =>
       app.quit()
     }
   }
-
-module.exports = (glob, options = {}) => {
+module.exports =  function elecronReload(glob, options = {}) {
   const browserWindows = []
   const watcher = chokidar.watch(glob, Object.assign({ ignored: [ignoredPaths, mainFile] }, options))
 

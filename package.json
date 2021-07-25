@@ -27,5 +27,6 @@
   },
   "devDependencies": {
     "standard": "^13.1.0"
-  }
+  },
+  "types": "./types/main.d.ts"
 }
