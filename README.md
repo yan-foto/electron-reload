@@ -8,8 +8,6 @@ This is (*hopefully*) the simplest way to load contents of all active [`BrowserW
 [![Known Vulnerabilities](https://snyk.io/test/github/yan-foto/electron-reload/badge.svg)](https://snyk.io/test/github/yan-foto/electron-reload)
 ![license](https://img.shields.io/npm/l/electron-reload.svg)
 
-**Disclaimer**: this module is in its very early stages and the logic is still not mature enough.
-
 # Installation
 ```
 npm install electron-reload
@@ -23,10 +21,10 @@ Just initialize this module with desired glob or file path to watch and let it r
 
 const {app, BrowserWindow} = require('electron');
 
-require('electron-reload')(__dirname);
+const electronReload = require('electron-reload')
 
 // Standard stuff
-app.on('ready', () {
+app.on('ready', () => {
   let mainWindow = new BrowserWindow({width: 800, height: 600});
 
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
@@ -34,15 +32,7 @@ app.on('ready', () {
 });
 ```
 
-Note that the above code only refreshes `WebContent`s of all `BrowserWindow`s. So if you want to have a hard reset (starting a new electron process) you can just pass the path to the electron executable in the `options` object. For example if you already have electron pre-built installed you could just do
-
-```js
-require('electron-reload')(__dirname, {
-  electron: require('electron-prebuilt')
-});
-```
-
-You could also use the (relatively) new [`electron`](https://www.npmjs.com/package/electron) package, *but* you should specify the path directly (no `require`!):
+Note that the above code only refreshes `WebContent`s of all `BrowserWindow`s. So if you want to have a hard reset (starting a new electron process) you can just pass the path to the electron executable in the `options` object:
 
 ```js
 const path = require('path')
