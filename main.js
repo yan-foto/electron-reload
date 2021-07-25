@@ -66,7 +66,11 @@ module.exports = function elecronReload (glob, options = {}) {
 
   // Preparing hard reset if electron executable is given in options
   // A hard reset is only done when the main file has changed
-  if (eXecutable && fs.existsSync(eXecutable)) {
+  if (eXecutable) {
+    if (!fs.existsSync(eXecutable)) {
+      throw new Error('Provided electron executable cannot be found or is not exeecutable!')
+    }
+
     const hardWatcher = chokidar.watch(mainFile, Object.assign({ ignored: [ignoredPaths] }, options))
 
     if (options.forceHardReset === true) {
@@ -77,7 +81,5 @@ module.exports = function elecronReload (glob, options = {}) {
     }
 
     hardWatcher.once('change', hardResetHandler)
-  } else {
-    console.log('Electron could not be found. No hard resets for you!')
   }
 }
