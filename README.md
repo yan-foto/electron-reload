@@ -75,6 +75,12 @@ Simply put, I was tired and confused by all other available modules which are so
 If you want to have least effort when developing electron packages, take a look at [neutron](https://github.com/yan-foto/neutron)!
 
 # Changelog
+ - **2.0.0-alpha.1**:
+   - Update outdated dependencies.
+   - Fix #35: throw error instead of logging to console.
+   - Fix #65: add TypeScript definitions.
+   - Fix #78: minor README fixes.
+   - Fix #87: enable passing arguments to the app itself.
  - **1.5.0**:
    - Upgrade `chokidar` from v2 to v3 (lighter/faster installation)
    - Add friendly linting in dev mode (`node run lint`) and fix CI linting issues (see [#62](https://github.com/yan-foto/electron-reload/pull/62))
