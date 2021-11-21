@@ -28,4 +28,4 @@ export interface ElectronReloadOptions extends WatchOptions {
     forceHardReset?: boolean
 }
 
-export default function electronReload(glob: string, options: ElectronReloadOptions) : void;
+export default function electronReload(glob: string | ReadonlyArray<string>, options: ElectronReloadOptions) : void;
