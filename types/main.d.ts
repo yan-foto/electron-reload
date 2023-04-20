@@ -10,12 +10,12 @@ export interface ElectronReloadOptions extends WatchOptions {
      * Arguments passed to the electron binary (relevant for hard
      * resets).
      */
-    electronArgv?: [string],
+    electronArgv?: string[],
     /**
      * Arguments passed to the application (relevant for hard
      * resets).
      */
-    appArgv?: [string]
+    appArgv?: string[]
     /**
      * Determines how to terminate electron in case of hard resets.
      * See 'https://www.electronjs.org/docs/api/app' for details.
@@ -28,4 +28,4 @@ export interface ElectronReloadOptions extends WatchOptions {
     forceHardReset?: boolean
 }
 
-export default function electronReload(glob: string, options: ElectronReloadOptions) : void;
+export default function electronReload(glob: string | readonly string[], options: ElectronReloadOptions) : void;
